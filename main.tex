@@ -1,0 +1,334 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[russian]{babel}
+\setlength{\parskip}{1em}
+\title{Теоритические модели вычислений\\ ДЗ №1: Регулярные языки и конечные автоматы}
+\author{Выполнила Савина Анна студентка группы A-13a-19 }
+\date{3 Апреля 2022 года}
+
+\begin{document}
+\maketitle
+
+\section{Задание №1. \\ Построить конечный автомат, распознающий язык}
+\begin{enumerate}
+    \item $L = \{\omega \in \{a, b, c\}^* \; | \; |\omega|_c = 1 \}$
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{graf1_1.png}
+    \end{center}
+\item $L = \{\omega \in \{a, b\}^* \; | \; |\omega|_a \leq 2, \; |\omega|_b \geq 2 \}$
+    
+    В данном случае удобно разбить данный язык на два:
+
+    $L_1 = \{\omega \in \{a, b\}^* \; | \; |\omega|_a \leq 2 \}$
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{graf1_2_1.png}
+    \end{center}
+    и
+    $L_2 = \{\omega \in \{a, b\}^* \; | \; |\omega|_b \geq 2\}$
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{graf1_2_1.png}
+    \end{center}
+
+    Дальше построим наш автомат, используя прямое произведение языков $L_1$ и $L_2$:
+    \begin{flushleft}
+    $L = <\Sigma, Q, s, T, \delta>$\\
+    $\Sigma = \{a, b\}$\\
+    $Q = \{<q1, z1>, <q1, z2>, <q1, z3>, <q2, z1>, <q2, z2>, <q2, z3>, <q3, z1>, <q3, z2>, <q3, z3>\}$\\
+    $s = <q1, z1>$\\
+    $T = \{<q1, z3>, <q2, z3>, <q3, z3>\}$\\
+    \\
+    \begin{tabular}{ |c|c|c| }
+        \hline
+        \multicolumn{3}{|c|}{$\delta$} \\
+        \hline
+         & a & b \\
+        \hline
+        <q1, z1> & <q2, z1> & <q1, z2> \\
+        \hline
+        <q1, z2> & <q2, z2> & <q1, z3> \\
+        \hline
+        <q1, z3> & <q2, z3> & <q1, z3> \\
+        \hline
+        <q2, z1> & <q3, z1> & <q2, z2> \\
+        \hline
+        <q2, z2> & <q3, z2> & <q2, z3> \\
+        \hline
+        <q2, z3> & <q3, z3> & <q2, z3> \\
+        \hline
+        <q3, z1> &    -   & <q3, z2> \\
+        \hline
+        <q3, z2> &    -    & <q3, z3> \\
+        \hline
+        <q3, z3> &    -   & <q3, z3> \\
+        \hline
+    \end{tabular}
+    
+    \includegraphics[width=0.8\textwidth]{graf1_2_3.png}
+    \end{flushleft}
+    \item $L = \{\omega \in \{a, b\}^* \; | \; |\omega|_a \neq |\omega|_b \}$
+    
+    Мы не сможем построить ДКА, который будет распозновать такой язык, так как мы не можем подсчитывать и запоминать количество переходов. Язык будет нерегулярный
+ 
+
+    \item $L = \{\omega \in \{a, b\}^* \; | \; \omega\omega = \omega\omega\omega\}$
+    
+    Такому языку удовлетворяет только пустое слово.
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{graf1_4.png}
+    \end{center}
+\end{enumerate}
+
+\section{Задание №2. Построить конечный автомат, используя прямое произведение}
+
+\begin{enumerate}
+
+    \item $L_1 = \{\omega \in \{a, b\}^* \; | \; |\omega|_a \geq 2 \land |\omega|_b \geq 2 \}$
+    
+    $L_{11} = \{\omega \in \{a, b\}^* \; | \; |\omega|_a \geq 2\}, \qquad L_{12} = \{\omega \in \{a, b\}^* \; | \; |\omega|_b \geq 2 \}$
+    \begin{center}
+        \includegraphics[width=0.4\textwidth]{graf2_1_1.png}
+        \includegraphics[width=0.4\textwidth]{graf2_1_2.png}
+    \end{center}
+    \begin{flushleft}
+        $L_1 = L_{11} \cap L_{12} = <\Sigma, Q, s, T, \delta>$ \\
+        $\Sigma = \{a, b\}$\\
+        $Q = \{<q1, z1>, <q1, z2>, <q1, z3>, <q2, z1>, <q2, z2>, <q2, z3>, <q3, z1>, <q3, 2>, <q3, z3>\}$\\
+        $s = <q1, z1>$\\
+        $T = \{<q3, z3>\}$\\
+        \begin{tabular}{ |c|c|c| }
+            \hline
+            \multicolumn{3}{|c|}{$\delta$} \\
+            \hline
+              & a & b \\
+            \hline
+            <q1, z1> & <q2, z1> & <q1, z2> \\
+            \hline
+            <q1, z2> & <q2, z2> & <q1, z3> \\
+            \hline
+            <q1, z3> & <q2, z3> & <q1, z3> \\
+            \hline
+            <q2, z1> & <q3, z1> & <q2, z2> \\
+            \hline
+            <q2, z2> & <q3, z2> & <q2, z3> \\
+            \hline
+            <q2, z3> & <q3, z3> & <q2, z3> \\
+            \hline
+            <q3, z1> & <q3, z1> & <q3, z2> \\
+            \hline
+            <q3, z2> & <q3, z2> & <q3, z3> \\
+            \hline
+            <q3, z3> & <q3, z3> & <q3, z3> \\
+            \hline
+        \end{tabular}
+        \includegraphics[width=1\textwidth]{graf2_1_3.png}
+    \end{flushleft}
+    
+    \item $L_2 = \{\omega \in \{a, b\}^* \; | \; |\omega| \geq 3 \land |\omega|$ нечетное$\}$
+    
+    $L_{21} = \{\omega \in \{a, b\}^* \; | \; |\omega| \geq 3\}, \qquad L_{22} = \{\omega \in \{a, b\}^* \; | \; |\omega|$ нечетное$\}$
+    \begin{center}
+        \includegraphics[width=0.4\textwidth]{graf2_2_1.png}
+        \includegraphics[width=0.4\textwidth]{graf2_2_2.png}
+    \end{center}
+    \begin{flushleft}
+        $L_2 = L_{21} \cap L_{22} = <\Sigma, Q, s, T, \delta>$ \\
+        $\Sigma = \{a, b\}$\\
+        $Q = \{<q1, z1>, <q1, z2>, <q2, z1>, <q2, z2>, <q3, z1>, <q3, z2>, <q4, z1>, <q4, z1>, <q4, z2>\}$\\
+        $s = <q1, z1>$\\
+        $T = \{<q4, z2>\}$\\
+        \begin{tabular}{ |c|c|c| }
+            \hline
+            \multicolumn{3}{|c|}{$\delta$} \\
+            \hline
+             & a & b \\
+            \hline
+            <q1, 1> & <q2, z2> & <q2, z2> \\
+            \hline
+            <q1, 2> & <q2, z1> & <q2, z1> \\
+            \hline
+            <q2, 1> & <q3, z2> & <q3, z2> \\
+            \hline
+            <q2, 2> & <q3, z1> & <q3, z1> \\
+            \hline
+            <q3, 1> & <q4, z2> & <q4, z2> \\
+            \hline
+            <q3, 2> & <q4, z1> & <q4, z1> \\
+            \hline
+            <q4, 1> & <q4, z2> & <q4, z2> \\
+            \hline
+            <q4, 2> & <q4, z1> & <q4, z1> \\
+            \hline
+        \end{tabular}
+        \includegraphics[width=1\textwidth]{graf2_2_3.png}
+        Данный ДКА можно упростить, т.к. попасть в q1z2, q2z1, q3z2 мы не можем. У нас получается:\\
+        \includegraphics[width=1\textwidth]{graf2_2_4.png}
+    \end{flushleft}
+
+    \item $L_3 = \{\omega \in \{a, b\}^* \; | \; |\omega|_a$ четно$\; \land \; |\omega|_b$ кратно трем$\}$
+    
+    $L_{31} = \{\omega \in \{a, b\}^* \; | \; |\omega|_a$ четно$\}, \qquad L_{32} = \{\omega \in \{a, b\}^* \; | \; |\omega|_b$ кратно трем$\}$
+    \begin{center}
+        \includegraphics[width=0.4\textwidth]{graf2_3_1.png}
+        \includegraphics[width=0.4\textwidth]{graf2_3_2.png}
+    \end{center}
+    \begin{flushleft}
+        $L_3 = L_{31} \cap L_{32} = <\Sigma, Q, s, T, \delta>$ \\
+        $\Sigma = \{a, b\}$\\
+        $Q = \{<q1, z1>, <q1, z2>, <q1, z3>, <q2, z1>, <q2, z2>, <q2, z3>\}$\\
+        $s = <q1, q1>$\\
+        $T = \{<q1, q1>\}$\\
+        \begin{tabular}{ |c|c|c| }
+            \hline
+            \multicolumn{3}{|c|}{$\delta$} \\
+            \hline
+             & a & b \\
+            \hline
+            <q1, z1> & <q2, z1> & <q1, z2> \\
+            \hline
+            <q1, z2> & <q2, z2> & <q1, z3> \\
+            \hline
+            <q1, z3> & <q2, z3> & <q1, z1> \\
+            \hline
+            <q2, z1> & <q1, z1> & <q2, z2> \\
+            \hline
+            <q2, z2> & <q1, z2> & <q2, z3> \\
+            \hline
+            <q2, z3> & <q1, z3> & <q2, z1> \\
+            \hline
+        \end{tabular}
+        \includegraphics[width=1\textwidth]{graf2_3_3.png}
+    \end{flushleft}
+
+    \item $L_4 = \lnot{L_3}$
+    \begin{center}
+        \includegraphics[width=1\textwidth]{graf2_4_1.png}
+    \end{center}
+    \item $L_5 = L_2 \setminus L_3$
+    
+    $L_5 = L_2 \cap \lnot L_3$, то есть автомат, распознающий язык $L_5$, строится как прямое произведение автоматов, распознающих языки $L_2$ и $L_4$
+    \begin{flushleft}
+        $L_3 = L_{31} \cap L_{32} = <\Sigma, Q, s, T, \delta>$ \\
+        $\Sigma = \{a, b\}$\\
+        $Q = \{<q1z1, q1z1>, <q1z1,q2z2>, <q1z1, q3z1>, <q1z1, q4z2>, <q1z1, q4z1>, <q1z2, q1z1>, <q1z2,q2z2>, <q1z2, q3z1>, <q1z2, q4z2>, <q1z2, q4z1, <q1z3, q1z1>, <q1z3,q2z2>, <q1z3, q3z1>, <q1z3, q4z2>, <q1z3, q4z1>, <q2z1, q2z1>, <q2z1,q2z2>, <q2z1, q3z1>, <q2z1, q4z2>, <q2z1, q4z1>, <q2z2, q1z1>, <q2z2,q2z2>, <q2z2, q3z1>, <q2z2, q4z2>, <q2z2, q4z1>,   <q3z3, q1z1>, <q1z3,q2z2>, <q3z3, q3z1>, <q3z3, q4z2>, <q3z3, q4z1>\}$\\
+        $s = <q1z1, q1z1>$\\
+        $T = \{<q1z2, q4z2>, <q1z3, q4z2>, <q2z1, q4z2>, <q2z2, q4z2>, <q2z3, q4z2>\}$\\
+       
+        \includegraphics[width=1\textwidth]{graf2_5_1.png}
+    \end{flushleft}
+    \section{Задание №3. Построить минимальный ДКА по регулярному выражению}
+\begin{enumerate}
+    \item $(ab + aba)^*a$
+    
+    Построим распознающий этот язык НКА:
+    \begin{center}
+        \includegraphics[width=1\textwidth]{graf3_1_1.png}
+    \end{center}
+    Дальше удалим все лямбда-переходы в данном НКА:
+    \begin{center}
+        \includegraphics[width=1\textwidth]{graf3_1_2.png}
+    \end{center}
+    
+    Дальше преобразуем нам НКА в ДКА. И получим минимальный ДКА в данном выражении: 
+
+    \begin{center}
+        \includegraphics[width=1\textwidth]{graf3_1_3.png}
+    \end{center}
+
+    \item $a(a(ab)^*b)^*(ab)^*$
+    
+    Построим распознающий этот язык НКА с лямбда=переходами
+    \begin{center}
+        \includegraphics[width=1\textwidth]{graf3_2_1.png}
+    \end{center}
+    Дальше удалим все лямбда-переходы:
+    \begin{center}
+        \includegraphics[width=1\textwidth]{graf3_2_2.png}
+    \end{center}
+    Соответствующий ему минимальный ДКА:
+    \begin{center}
+        \includegraphics[width=1\textwidth]{graf3_2_3.png}
+    \end{center}
+    
+   
+    \item $(a+(a+b)(a+b)b)^*$
+    Построим распознающий этот язык НКА с лямбда=переходами
+    \begin{center}
+        \includegraphics[width=1\textwidth]{graf3_4_1.png}
+    \end{center}
+   
+    Соответствующий ему минимальный ДКА:
+    \begin{center}
+        \includegraphics[width=1\textwidth]{graf3_4_2.png}
+    \end{center}
+    
+     \item $(a+b)^+(aa+bb+abab+baba)(a+b)^+$
+    Построим распознающий этот язык НКА:
+    \begin{center}
+        \includegraphics[width=1\textwidth]{graf3_5_1.png}
+    \end{center}
+   
+    Соответствующий ему минимальный ДКА:
+    \begin{flushleft}
+        \includegraphics[width=1\textwidth]{graf5_2.png}
+    \end{flushleft}
+    
+    
+
+\end{enumerate}
+   
+\end{enumerate}
+
+\section{Задание №4. Определить, является ли язык регулярным или нет}
+
+\begin{enumerate}
+    \item $L = \{(aab)^nb(aba)^m \; | \; n \geq 0, \; m \geq 0\}$
+    
+   Данный язык является регулярным
+    \begin{center}
+        \includegraphics[width=01\textwidth]{graf3_5_1.png}
+    \end{center}
+
+    \item $L = \{uaav \; | \; u \in \{a, b\}^*, \; v \in \{a, b\}^*, \; |u|_b \geq |v|_a\}$
+   Докажем, что язык не регулярный используя лемму о возрастаннии\\
+    Зафиксируем $\forall n \in \mathbb{N} $. 
+    Рассмотрим слово $\omega = b^naaa^n, \; |\omega| = 2n + 2 \geq n$.
+    Теперь рассмотрим все разбиения этого слова $\omega = xyz$ такие, что $|y| \neq 0, \; |xy| \leq n$:
+    $$x = b^{k_1}, \; y = b^{k_2}, \; z = b^{n-k_1-k_2}aaa^n; \quad (1 \leq k_1 + k_2 \leq n, \; k_2 > 0)$$\\
+    Для любого из таких разбиений слово $xy^0z \notin L$. Следовательно, использовав  отрицание леммы о возрастаннии, доказали нерегулярность языка $L$.
+    
+     \item $L = \{a^m\omega \; | \; \omega \in \{a, b\}^*, \; 1 \leq|\omega|_b\leq m $ \\
+     Докажем нерегулярность языка используя лемму о возрастании.\\
+     Зафиксируем $\forall n \in \mathbb{N} $. \\
+     Пусть $w=b^naaa^{n+1} \in \overline{L};\ |w| \geq n$. \\
+     Все возможные разбиения при $|xy| \leq n$ и $|y| \geq 1$:\\
+        $x=b^l$\\
+        $y=b^k$\\
+        $z=b^{n-l-k}aaa^{n+1}$\\
+        При накачивании $y$, будет увеличиваться количество букв $b$ и в какой-то момент их будет больше, чем букв $a$ и слово уже не будет принадлежать $\overline{L}$. Следовательно, язык $\overline{L}$ - нерегулярный. Следовательно, язык $L$ тоже нерегулярный.
+        
+     \item $L = { a^mw : w \in {a, b}^,\ 1\leq |w|_b \leq m }$\\
+    Докажем нерегулярность языка используя лемму о возрастании.\\
+    Пусть $\overline{L}$:
+    $\overline{L} = { a^mw : w \in {a, b}^,\ |w|_b > m\ \lor\ |w|_b=0}$\\
+    Зафиксируем $\forall n \in \mathbb{N} $. \\
+    Пусть $w=a^nb^{n+1} \in \overline{L};\ |w| \geq n$\\
+    Все возможные разбиения при $|xy| \leq n$ и $|y| \geq 1$:\\
+    $x=a^l$\\
+    $y=a^k$\\
+    $z=a^{n-l-k}b^{n+1}$\\
+    При накачивании $y$ букв $a$ будет больше, чем букв $b$, и  условие $|w|_b > m$ не будет выполняться. Из этого следует, что язык $\overline{L}$ - нерегулярный. Следовательно $L$ тоже нерегулярный.
+    
+    
+    \item $L = { a^kb^ma^n : k = n\ \lor\ m > 0}$\\
+    Докажем нерегулярность языка используя лемму о возрастании.\\
+    Зафиксируем $\forall n \in \mathbb{N} $. \\
+    Пусть $w=a^nba^n \in L;\ |w| \geq n$\\
+    Все возможные разбиения:\\
+    $x=a^l$\\
+    $y=a^k$\\
+    $z=a^{n-l-k}ba^n$\\
+    При накачивании $y$ равенство $k=n$ перестанет выполняться. Следовательно, $L$ - нерегулярный язык.
+    
+    \end{enumerate}
+\end{document}
